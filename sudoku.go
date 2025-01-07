@@ -7,8 +7,8 @@ import (
 
 func main() {
 	problem := exactCoverDefinition{
-		rowNames: []string{"row1"},
-		colNames: []string{"col1"},
+		rowNames: nameSlice{"row1"},
+		colNames: nameSlice{"col1"},
 		elems:    []bool{true},
 	}
 	if solution, err := solve(problem); err != nil {
