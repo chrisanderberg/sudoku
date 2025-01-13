@@ -3,7 +3,9 @@ package main
 import (
 	"errors"
 	"fmt"
+	"strings"
 	"unicode"
+	"unicode/utf8"
 )
 
 type name string
@@ -26,6 +28,16 @@ func (ns nameSlice) validate() error {
 		}
 	}
 	return nil
+}
+
+func (ns nameSlice) maxNameLength() int {
+	maxLength := 0
+	for _, n := range ns {
+		if nameLength := utf8.RuneCountInString(string(n)); nameLength > maxLength {
+			maxLength = nameLength
+		}
+	}
+	return maxLength
 }
 
 type exactCoverDefinition struct {
@@ -53,11 +65,49 @@ func (ec exactCoverDefinition) validate() error {
 	return nil
 }
 
-/*
 func (ec exactCoverDefinition) String() string {
+	maxRowNameLength := ec.rowNames.maxNameLength()
+	maxColNameLength := ec.colNames.maxNameLength()
 
+	text := make([][]rune, maxColNameLength+len(ec.rowNames)+1)
+	for i, _ := range text {
+		text[i] = make([]rune, maxRowNameLength+len(ec.colNames)+1)
+		for j, _ := range text[i] {
+			text[i][j] = ' '
+		}
+	}
+
+	for i, colName := range ec.colNames {
+		offset := maxColNameLength - utf8.RuneCountInString(string(colName))
+		for j, character := range colName {
+			text[offset+j][maxRowNameLength+1+i] = character
+		}
+	}
+
+	for i, rowName := range ec.rowNames {
+		offset := maxRowNameLength - utf8.RuneCountInString(string(rowName))
+		for j, character := range rowName {
+			text[maxColNameLength+1+i][offset+j] = character
+		}
+	}
+
+	for r, _ := range ec.rowNames {
+		for c, _ := range ec.colNames {
+			if ec.elems[r*len(ec.colNames)+c] {
+				text[maxColNameLength+1+r][maxRowNameLength+1+c] = '1'
+			} else {
+				text[maxColNameLength+1+r][maxRowNameLength+1+c] = '0'
+			}
+		}
+	}
+
+	textLines := make([]string, len(text))
+	for i, _ := range text {
+		textLines[i] = string(text[i])
+	}
+
+	return strings.Join(textLines, "\n")
 }
-*/
 
 func solve(problem exactCoverDefinition) ([]int, error) {
 	if err := problem.validate(); err != nil {

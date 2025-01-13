@@ -54,3 +54,31 @@ func TestNamesCantHaveNewlines(t *testing.T) {
 		t.Fatalf("names with newlines in them should return a validation error")
 	}
 }
+
+func TestMaxNameLengthEmptyNameSlice(t *testing.T) {
+	var ns nameSlice
+	if length := ns.maxNameLength(); length != 0 {
+		t.Fatalf("expected max name length to be 0 for an empty name slice, but got %d", length)
+	}
+}
+
+func TestMaxNameLengthNameSliceWithEmptyString(t *testing.T) {
+	ns := nameSlice{""}
+	if length := ns.maxNameLength(); length != 0 {
+		t.Fatalf("expected max name length to be 0 for a name slice containing only an empty string, but got %d", length)
+	}
+}
+
+func TestMaxNameLengthNameSliceWithDifferentLengthStrings(t *testing.T) {
+	ns := nameSlice{"name", "", "longname"}
+	if length := ns.maxNameLength(); length != 8 {
+		t.Fatalf("expected max name length to be 8 for nameSlice{\"name\", \"\", \"longname\"}, but got %d", length)
+	}
+}
+
+func TestMaxNameLengthNameSliceWithUnicode(t *testing.T) {
+	ns := nameSlice{"name", "", "longname", "⌘⌘⌘⌘⌘⌘⌘⌘⌘⌘⌘⌘"}
+	if length := ns.maxNameLength(); length != 12 {
+		t.Fatalf("expected max name length to be 8 for nameSlice{\"name\", \"\", \"longname\"}, but got %d", length)
+	}
+}
