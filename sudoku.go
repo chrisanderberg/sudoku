@@ -6,15 +6,17 @@ import (
 )
 
 func main() {
-	problem := exactCoverDefinition{
-		rowNames: nameSlice{"row1", "row2", "row3"},
-		colNames: nameSlice{"col1", "col2", "col3"},
-		elems:    []bool{true, false, false, false, true, false, false, false, true},
+	completeSolution := exactCoverCompleteSolution{
+		originalProblem: exactCoverProblem{
+			rowNames: nameSlice{"row1", "row2", "row3"},
+			colNames: nameSlice{"col1", "col2", "col3"},
+			elems:    []bool{true, true, false, false, true, false, false, false, true},
+		},
+		selectedRows: []bool{true, true, true},
 	}
-	if solution, err := solve(problem); err != nil {
+	if err := completeSolution.validate(); err != nil {
 		log.Fatal(err)
 	} else {
-		fmt.Println(solution)
+		fmt.Println(completeSolution)
 	}
-	fmt.Println(problem)
 }

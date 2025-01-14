@@ -5,7 +5,7 @@ import (
 )
 
 func TestValidExactCoverDefinitionHasNoValidationError(t *testing.T) {
-	problem := exactCoverDefinition{
+	problem := exactCoverProblem{
 		rowNames: nameSlice{"row1"},
 		colNames: nameSlice{"col1"},
 		elems:    []bool{true},
@@ -16,7 +16,7 @@ func TestValidExactCoverDefinitionHasNoValidationError(t *testing.T) {
 }
 
 func TestNumberRowsValidation(t *testing.T) {
-	problem := exactCoverDefinition{
+	problem := exactCoverProblem{
 		rowNames: nameSlice{},
 		colNames: nameSlice{"col1"},
 		elems:    []bool{true},
@@ -27,7 +27,7 @@ func TestNumberRowsValidation(t *testing.T) {
 }
 
 func TestNumberColsValidation(t *testing.T) {
-	problem := exactCoverDefinition{
+	problem := exactCoverProblem{
 		rowNames: nameSlice{"row1"},
 		colNames: nameSlice{},
 		elems:    []bool{true},
@@ -38,7 +38,7 @@ func TestNumberColsValidation(t *testing.T) {
 }
 
 func TestNumberElemsValidation(t *testing.T) {
-	problem := exactCoverDefinition{
+	problem := exactCoverProblem{
 		rowNames: nameSlice{"row1", "row2"},
 		colNames: nameSlice{"col1"},
 		elems:    []bool{true},
@@ -55,30 +55,39 @@ func TestNamesCantHaveNewlines(t *testing.T) {
 	}
 }
 
-func TestMaxNameLengthEmptyNameSlice(t *testing.T) {
-	var ns nameSlice
-	if length := ns.maxNameLength(); length != 0 {
-		t.Fatalf("expected max name length to be 0 for an empty name slice, but got %d", length)
+func TestNamesCantHaveCommas(t *testing.T) {
+	n := name("invalid,name")
+	if err := n.validate(); err == nil {
+		t.Fatalf("names with commas in them should return a validation error")
 	}
 }
 
-func TestMaxNameLengthNameSliceWithEmptyString(t *testing.T) {
-	ns := nameSlice{""}
-	if length := ns.maxNameLength(); length != 0 {
-		t.Fatalf("expected max name length to be 0 for a name slice containing only an empty string, but got %d", length)
+func TestPartialSolutionInvalidWhenSameColumnCoveredByMultipleRows(t *testing.T) {
+	problem := exactCoverProblem{
+		rowNames: nameSlice{"row1", "row2"},
+		colNames: nameSlice{"col1"},
+		elems:    []bool{true, true},
+	}
+	solution := exactCoverPartialSolution{
+		originalProblem: problem,
+		selectedRows:    []bool{true, true},
+	}
+	if err := solution.validate(); err == nil {
+		t.Fatalf("partial solution should be invalid when the same column is covered by multiple selected rows")
 	}
 }
 
-func TestMaxNameLengthNameSliceWithDifferentLengthStrings(t *testing.T) {
-	ns := nameSlice{"name", "", "longname"}
-	if length := ns.maxNameLength(); length != 8 {
-		t.Fatalf("expected max name length to be 8 for nameSlice{\"name\", \"\", \"longname\"}, but got %d", length)
+func TestCompleteSolutionInvalidWhenColumnNotCovered(t *testing.T) {
+	problem := exactCoverProblem{
+		rowNames: nameSlice{"row1", "row2"},
+		colNames: nameSlice{"col1", "col2"},
+		elems:    []bool{true, false, false, true},
 	}
-}
-
-func TestMaxNameLengthNameSliceWithUnicode(t *testing.T) {
-	ns := nameSlice{"name", "", "longname", "⌘⌘⌘⌘⌘⌘⌘⌘⌘⌘⌘⌘"}
-	if length := ns.maxNameLength(); length != 12 {
-		t.Fatalf("expected max name length to be 8 for nameSlice{\"name\", \"\", \"longname\"}, but got %d", length)
+	solution := exactCoverCompleteSolution{
+		originalProblem: problem,
+		selectedRows:    []bool{true, false},
+	}
+	if err := solution.validate(); err == nil {
+		t.Fatalf("complete solution should be invalid when a column hasn't been covered by any selected row")
 	}
 }
