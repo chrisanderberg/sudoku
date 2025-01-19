@@ -81,27 +81,27 @@ func (ec exactCoverProblem) String() string {
 
 // exactCoverPartialSolution represents a solution to an exact cover problem
 type exactCoverPartialSolution struct {
-	originalProblem exactCoverProblem
-	selectedRows    []bool
+	problem      exactCoverProblem
+	selectedRows []bool
 }
 
 // validate checks the validity of the exact cover solution
 func (ecps exactCoverPartialSolution) validate() error {
-	if err := ecps.originalProblem.validate(); err != nil {
+	if err := ecps.problem.validate(); err != nil {
 		return fmt.Errorf("original problem is invalid: %v", err)
 	}
-	if len(ecps.selectedRows) != len(ecps.originalProblem.rowNames) {
-		return fmt.Errorf("solution has %d selected rows, but the problem has %d rows", len(ecps.selectedRows), len(ecps.originalProblem.rowNames))
+	if len(ecps.selectedRows) != len(ecps.problem.rowNames) {
+		return fmt.Errorf("solution has %d selected rows, but the problem has %d rows", len(ecps.selectedRows), len(ecps.problem.rowNames))
 	}
-	coveredCols := make([]string, len(ecps.originalProblem.colNames))
+	coveredCols := make([]string, len(ecps.problem.colNames))
 	for i, isSelected := range ecps.selectedRows {
 		if isSelected {
-			for j, elem := range ecps.originalProblem.elems[i*len(ecps.originalProblem.colNames) : (i+1)*len(ecps.originalProblem.colNames)] {
+			for j, elem := range ecps.problem.elems[i*len(ecps.problem.colNames) : (i+1)*len(ecps.problem.colNames)] {
 				if elem {
 					if coveredCols[j] != "" {
-						return fmt.Errorf("row %v covers col %v, but col %v is already covered by row %v", ecps.originalProblem.rowNames[i], ecps.originalProblem.colNames[j], ecps.originalProblem.colNames[j], coveredCols[j])
+						return fmt.Errorf("row %v covers col %v, but col %v is already covered by row %v", ecps.problem.rowNames[i], ecps.problem.colNames[j], ecps.problem.colNames[j], coveredCols[j])
 					}
-					coveredCols[j] = string(ecps.originalProblem.rowNames[i])
+					coveredCols[j] = string(ecps.problem.rowNames[i])
 				}
 			}
 		}
@@ -111,11 +111,11 @@ func (ecps exactCoverPartialSolution) validate() error {
 
 func (ecps exactCoverPartialSolution) String() string {
 	var textLines []string
-	for i, rowName := range ecps.originalProblem.rowNames {
+	for i, rowName := range ecps.problem.rowNames {
 		if ecps.selectedRows[i] {
 			var colNames []string
-			for j, colName := range ecps.originalProblem.colNames {
-				if ecps.originalProblem.elems[i*len(ecps.originalProblem.colNames)+j] {
+			for j, colName := range ecps.problem.colNames {
+				if ecps.problem.elems[i*len(ecps.problem.colNames)+j] {
 					colNames = append(colNames, string(colName))
 				}
 			}
@@ -130,28 +130,28 @@ type exactCoverCompleteSolution exactCoverPartialSolution
 
 // validate checks the validity of the exact cover complete solution
 func (eccs exactCoverCompleteSolution) validate() error {
-	if err := eccs.originalProblem.validate(); err != nil {
+	if err := eccs.problem.validate(); err != nil {
 		return fmt.Errorf("original problem is invalid: %v", err)
 	}
-	if len(eccs.selectedRows) != len(eccs.originalProblem.rowNames) {
-		return fmt.Errorf("solution has %d selected rows, but the problem has %d rows", len(eccs.selectedRows), len(eccs.originalProblem.rowNames))
+	if len(eccs.selectedRows) != len(eccs.problem.rowNames) {
+		return fmt.Errorf("solution has %d selected rows, but the problem has %d rows", len(eccs.selectedRows), len(eccs.problem.rowNames))
 	}
-	coveredCols := make([]string, len(eccs.originalProblem.colNames))
+	coveredCols := make([]string, len(eccs.problem.colNames))
 	for i, isSelected := range eccs.selectedRows {
 		if isSelected {
-			for j, elem := range eccs.originalProblem.elems[i*len(eccs.originalProblem.colNames) : (i+1)*len(eccs.originalProblem.colNames)] {
+			for j, elem := range eccs.problem.elems[i*len(eccs.problem.colNames) : (i+1)*len(eccs.problem.colNames)] {
 				if elem {
 					if coveredCols[j] != "" {
-						return fmt.Errorf("row %v covers col %v, but col %v is already covered by row %v", eccs.originalProblem.rowNames[i], eccs.originalProblem.colNames[j], eccs.originalProblem.colNames[j], coveredCols[j])
+						return fmt.Errorf("row %v covers col %v, but col %v is already covered by row %v", eccs.problem.rowNames[i], eccs.problem.colNames[j], eccs.problem.colNames[j], coveredCols[j])
 					}
-					coveredCols[j] = string(eccs.originalProblem.rowNames[i])
+					coveredCols[j] = string(eccs.problem.rowNames[i])
 				}
 			}
 		}
 	}
 	for i, coveredCol := range coveredCols {
 		if coveredCol == "" {
-			return fmt.Errorf("col %v is not covered by any selected row", eccs.originalProblem.colNames[i])
+			return fmt.Errorf("col %v is not covered by any selected row", eccs.problem.colNames[i])
 		}
 	}
 	return nil
@@ -163,7 +163,110 @@ func (eccs exactCoverCompleteSolution) String() string {
 
 // exactCoverMatrix represents the matrix form of an exact cover problem
 type exactCoverMatrix struct {
-	originalProblem exactCoverProblem
+	problem   exactCoverProblem
+	left      []int
+	right     []int
+	up        []int
+	down      []int
+	colHeader []int
+	colSize   []int
+	rowNum    []int
+	colNum    []int
+}
+
+// buildMatrix constructs an exactCoverMatrix from an exactCoverPartialSolution
+func buildMatrix(problem exactCoverProblem) exactCoverMatrix {
+	numRows := len(problem.rowNames)
+	numCols := len(problem.colNames)
+	numElems := 0
+
+	// Count the number of true values in problem.elems
+	for _, elem := range problem.elems {
+		if elem {
+			numElems++
+		}
+	}
+
+	// Initialize arrays for the matrix representation
+	left := make([]int, numElems+numCols+1)
+	right := make([]int, numElems+numCols+1)
+	up := make([]int, numElems+numCols+1)
+	down := make([]int, numElems+numCols+1)
+	colHeader := make([]int, numElems+numCols+1)
+	rowNum := make([]int, numElems+numCols+1)
+	colNum := make([]int, numElems+numCols+1)
+	colSize := make([]int, numCols)
+
+	// Set up the column headers
+	for i := 0; i < numCols; i++ {
+		left[i] = i - 1
+		right[i] = i + 1
+		up[i] = i
+		down[i] = i
+		colHeader[i] = i
+		rowNum[i] = -1
+		colNum[i] = i
+		colSize[i] = 0
+	}
+
+	// Set up the header node
+	header := numElems + numCols
+	left[0] = header
+	left[header] = numCols - 1
+	right[header] = 0
+	right[numCols-1] = header
+	up[header] = header
+	down[header] = header
+	colHeader[header] = header
+	colNum[header] = -1
+	rowNum[header] = -1
+
+	// Populate the matrix with nodes
+	node := numCols
+	for rowIndex := 0; rowIndex < numRows; rowIndex++ {
+		firstNodeInRow := true
+		for colIndex := 0; colIndex < numCols; colIndex++ {
+			if problem.elems[rowIndex*numCols+colIndex] {
+				rowNum[node] = rowIndex
+				colNum[node] = colIndex
+
+				// insert the node into the column
+				colHeader[node] = colIndex
+				colSize[colIndex]++
+				down[node] = colIndex
+				up[node] = up[colIndex]
+				down[up[colIndex]] = node
+				up[colIndex] = node
+
+				if firstNodeInRow {
+					// first node in the row
+					firstNodeInRow = false
+					left[node] = node
+					right[node] = node
+				} else {
+					// insert the node into the row
+					left[node] = node - 1
+					right[node] = right[node-1]
+					left[right[node]] = node
+					right[node-1] = node
+				}
+
+				node++
+			}
+		}
+	}
+
+	return exactCoverMatrix{
+		problem:   problem,
+		left:      left,
+		right:     right,
+		up:        up,
+		down:      down,
+		colHeader: colHeader,
+		colSize:   colSize,
+		rowNum:    rowNum,
+		colNum:    colNum,
+	}
 }
 
 // solve attempts to solve the exact cover problem and returns a solution
@@ -172,7 +275,7 @@ func solve(problem exactCoverProblem) (exactCoverPartialSolution, error) {
 		return exactCoverPartialSolution{}, err
 	}
 	return exactCoverPartialSolution{
-		originalProblem: problem,
-		selectedRows:    make([]bool, len(problem.rowNames)),
+		problem:      problem,
+		selectedRows: make([]bool, len(problem.rowNames)),
 	}, nil
 }
