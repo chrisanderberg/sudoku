@@ -101,15 +101,14 @@ func TestBuildIdentityMatrix(t *testing.T) {
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{4, 0, 2, 3, 1},
-		right:     []int{1, 4, 2, 3, 0},
-		up:        []int{2, 3, 0, 1, 4},
-		down:      []int{2, 3, 0, 1, 4},
-		colHeader: []int{0, 1, 0, 1},
-		colSize:   []int{1, 1},
-		rowNum:    []int{-1, -1, 0, 1, -1},
-		colNum:    []int{0, 1, 0, 1, -1},
+		problem: problem,
+		left:    []int{4, 0, 2, 3, 1},
+		right:   []int{1, 4, 2, 3, 0},
+		up:      []int{2, 3, 0, 1, 4},
+		down:    []int{2, 3, 0, 1, 4},
+		colSize: []int{1, 1},
+		rowNum:  []int{-1, -1, 0, 1, -1},
+		colNum:  []int{0, 1, 0, 1, -1},
 	}
 
 	if actual := buildMatrix(problem); !reflect.DeepEqual(actual, expected) {
@@ -125,15 +124,14 @@ func TestBuildEmptyMatrix(t *testing.T) {
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{2, 0, 1},
-		right:     []int{1, 2, 0},
-		up:        []int{0, 1, 2},
-		down:      []int{0, 1, 2},
-		colHeader: []int{0, 1},
-		colSize:   []int{0, 0},
-		rowNum:    []int{-1, -1, -1},
-		colNum:    []int{0, 1, -1},
+		problem: problem,
+		left:    []int{2, 0, 1},
+		right:   []int{1, 2, 0},
+		up:      []int{0, 1, 2},
+		down:    []int{0, 1, 2},
+		colSize: []int{0, 0},
+		rowNum:  []int{-1, -1, -1},
+		colNum:  []int{0, 1, -1},
 	}
 
 	if actual := buildMatrix(problem); !reflect.DeepEqual(actual, expected) {
@@ -149,15 +147,14 @@ func TestBuildFullMatrix(t *testing.T) {
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{6, 0, 3, 2, 5, 4, 1},
-		right:     []int{1, 6, 3, 2, 5, 4, 0},
-		up:        []int{4, 5, 0, 1, 2, 3, 6},
-		down:      []int{2, 3, 4, 5, 0, 1, 6},
-		colHeader: []int{0, 1, 0, 1, 0, 1},
-		colSize:   []int{2, 2},
-		rowNum:    []int{-1, -1, 0, 0, 1, 1, -1},
-		colNum:    []int{0, 1, 0, 1, 0, 1, -1},
+		problem: problem,
+		left:    []int{6, 0, 3, 2, 5, 4, 1},
+		right:   []int{1, 6, 3, 2, 5, 4, 0},
+		up:      []int{4, 5, 0, 1, 2, 3, 6},
+		down:    []int{2, 3, 4, 5, 0, 1, 6},
+		colSize: []int{2, 2},
+		rowNum:  []int{-1, -1, 0, 0, 1, 1, -1},
+		colNum:  []int{0, 1, 0, 1, 0, 1, -1},
 	}
 
 	if actual := buildMatrix(problem); !reflect.DeepEqual(actual, expected) {
@@ -173,15 +170,14 @@ func TestBuildInverseIdentityMatrix(t *testing.T) {
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{9, 0, 1, 4, 3, 6, 5, 8, 7, 2},
-		right:     []int{1, 2, 9, 4, 3, 6, 5, 8, 7, 0},
-		up:        []int{7, 8, 6, 1, 2, 0, 4, 5, 3, 9},
-		down:      []int{5, 3, 4, 8, 6, 7, 2, 0, 1, 9},
-		colHeader: []int{0, 1, 2, 1, 2, 0, 2, 0, 1},
-		colSize:   []int{2, 2, 2},
-		rowNum:    []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
-		colNum:    []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
+		problem: problem,
+		left:    []int{9, 0, 1, 4, 3, 6, 5, 8, 7, 2},
+		right:   []int{1, 2, 9, 4, 3, 6, 5, 8, 7, 0},
+		up:      []int{7, 8, 6, 1, 2, 0, 4, 5, 3, 9},
+		down:    []int{5, 3, 4, 8, 6, 7, 2, 0, 1, 9},
+		colSize: []int{2, 2, 2},
+		rowNum:  []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
+		colNum:  []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
 	}
 
 	if actual := buildMatrix(problem); !reflect.DeepEqual(actual, expected) {
@@ -197,27 +193,25 @@ func TestIdentityMatrixCoverLeftColumn(t *testing.T) {
 	}
 
 	actual := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{4, 0, 2, 3, 1},
-		right:     []int{1, 4, 2, 3, 0},
-		up:        []int{2, 3, 0, 1, 4},
-		down:      []int{2, 3, 0, 1, 4},
-		colHeader: []int{0, 1, 0, 1},
-		colSize:   []int{1, 1},
-		rowNum:    []int{-1, -1, 0, 1, -1},
-		colNum:    []int{0, 1, 0, 1, -1},
+		problem: problem,
+		left:    []int{4, 0, 2, 3, 1},
+		right:   []int{1, 4, 2, 3, 0},
+		up:      []int{2, 3, 0, 1, 4},
+		down:    []int{2, 3, 0, 1, 4},
+		colSize: []int{1, 1},
+		rowNum:  []int{-1, -1, 0, 1, -1},
+		colNum:  []int{0, 1, 0, 1, -1},
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{4, 4, 2, 3, 1},
-		right:     []int{1, 4, 2, 3, 1},
-		up:        []int{2, 3, 0, 1, 4},
-		down:      []int{2, 3, 0, 1, 4},
-		colHeader: []int{0, 1, 0, 1},
-		colSize:   []int{1, 1},
-		rowNum:    []int{-1, -1, 0, 1, -1},
-		colNum:    []int{0, 1, 0, 1, -1},
+		problem: problem,
+		left:    []int{4, 4, 2, 3, 1},
+		right:   []int{1, 4, 2, 3, 1},
+		up:      []int{2, 3, 0, 1, 4},
+		down:    []int{2, 3, 0, 1, 4},
+		colSize: []int{1, 1},
+		rowNum:  []int{-1, -1, 0, 1, -1},
+		colNum:  []int{0, 1, 0, 1, -1},
 	}
 
 	if actual.coverColumn(0); !reflect.DeepEqual(actual, expected) {
@@ -233,27 +227,25 @@ func TestIdentityMatrixUncoverLeftColumn(t *testing.T) {
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{4, 0, 2, 3, 1},
-		right:     []int{1, 4, 2, 3, 0},
-		up:        []int{2, 3, 0, 1, 4},
-		down:      []int{2, 3, 0, 1, 4},
-		colHeader: []int{0, 1, 0, 1},
-		colSize:   []int{1, 1},
-		rowNum:    []int{-1, -1, 0, 1, -1},
-		colNum:    []int{0, 1, 0, 1, -1},
+		problem: problem,
+		left:    []int{4, 0, 2, 3, 1},
+		right:   []int{1, 4, 2, 3, 0},
+		up:      []int{2, 3, 0, 1, 4},
+		down:    []int{2, 3, 0, 1, 4},
+		colSize: []int{1, 1},
+		rowNum:  []int{-1, -1, 0, 1, -1},
+		colNum:  []int{0, 1, 0, 1, -1},
 	}
 
 	actual := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{4, 4, 2, 3, 1},
-		right:     []int{1, 4, 2, 3, 1},
-		up:        []int{2, 3, 0, 1, 4},
-		down:      []int{2, 3, 0, 1, 4},
-		colHeader: []int{0, 1, 0, 1},
-		colSize:   []int{1, 1},
-		rowNum:    []int{-1, -1, 0, 1, -1},
-		colNum:    []int{0, 1, 0, 1, -1},
+		problem: problem,
+		left:    []int{4, 4, 2, 3, 1},
+		right:   []int{1, 4, 2, 3, 1},
+		up:      []int{2, 3, 0, 1, 4},
+		down:    []int{2, 3, 0, 1, 4},
+		colSize: []int{1, 1},
+		rowNum:  []int{-1, -1, 0, 1, -1},
+		colNum:  []int{0, 1, 0, 1, -1},
 	}
 
 	if actual.uncoverColumn(0); !reflect.DeepEqual(actual, expected) {
@@ -269,27 +261,25 @@ func TestIdentityMatrixCoverRightColumn(t *testing.T) {
 	}
 
 	actual := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{4, 0, 2, 3, 1},
-		right:     []int{1, 4, 2, 3, 0},
-		up:        []int{2, 3, 0, 1, 4},
-		down:      []int{2, 3, 0, 1, 4},
-		colHeader: []int{0, 1, 0, 1},
-		colSize:   []int{1, 1},
-		rowNum:    []int{-1, -1, 0, 1, -1},
-		colNum:    []int{0, 1, 0, 1, -1},
+		problem: problem,
+		left:    []int{4, 0, 2, 3, 1},
+		right:   []int{1, 4, 2, 3, 0},
+		up:      []int{2, 3, 0, 1, 4},
+		down:    []int{2, 3, 0, 1, 4},
+		colSize: []int{1, 1},
+		rowNum:  []int{-1, -1, 0, 1, -1},
+		colNum:  []int{0, 1, 0, 1, -1},
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{4, 0, 2, 3, 0},
-		right:     []int{4, 4, 2, 3, 0},
-		up:        []int{2, 3, 0, 1, 4},
-		down:      []int{2, 3, 0, 1, 4},
-		colHeader: []int{0, 1, 0, 1},
-		colSize:   []int{1, 1},
-		rowNum:    []int{-1, -1, 0, 1, -1},
-		colNum:    []int{0, 1, 0, 1, -1},
+		problem: problem,
+		left:    []int{4, 0, 2, 3, 0},
+		right:   []int{4, 4, 2, 3, 0},
+		up:      []int{2, 3, 0, 1, 4},
+		down:    []int{2, 3, 0, 1, 4},
+		colSize: []int{1, 1},
+		rowNum:  []int{-1, -1, 0, 1, -1},
+		colNum:  []int{0, 1, 0, 1, -1},
 	}
 
 	if actual.coverColumn(1); !reflect.DeepEqual(actual, expected) {
@@ -305,27 +295,25 @@ func TestIdentityMatrixUncoverRightColumn(t *testing.T) {
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{4, 0, 2, 3, 1},
-		right:     []int{1, 4, 2, 3, 0},
-		up:        []int{2, 3, 0, 1, 4},
-		down:      []int{2, 3, 0, 1, 4},
-		colHeader: []int{0, 1, 0, 1},
-		colSize:   []int{1, 1},
-		rowNum:    []int{-1, -1, 0, 1, -1},
-		colNum:    []int{0, 1, 0, 1, -1},
+		problem: problem,
+		left:    []int{4, 0, 2, 3, 1},
+		right:   []int{1, 4, 2, 3, 0},
+		up:      []int{2, 3, 0, 1, 4},
+		down:    []int{2, 3, 0, 1, 4},
+		colSize: []int{1, 1},
+		rowNum:  []int{-1, -1, 0, 1, -1},
+		colNum:  []int{0, 1, 0, 1, -1},
 	}
 
 	actual := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{4, 0, 2, 3, 0},
-		right:     []int{4, 4, 2, 3, 0},
-		up:        []int{2, 3, 0, 1, 4},
-		down:      []int{2, 3, 0, 1, 4},
-		colHeader: []int{0, 1, 0, 1},
-		colSize:   []int{1, 1},
-		rowNum:    []int{-1, -1, 0, 1, -1},
-		colNum:    []int{0, 1, 0, 1, -1},
+		problem: problem,
+		left:    []int{4, 0, 2, 3, 0},
+		right:   []int{4, 4, 2, 3, 0},
+		up:      []int{2, 3, 0, 1, 4},
+		down:    []int{2, 3, 0, 1, 4},
+		colSize: []int{1, 1},
+		rowNum:  []int{-1, -1, 0, 1, -1},
+		colNum:  []int{0, 1, 0, 1, -1},
 	}
 
 	if actual.uncoverColumn(1); !reflect.DeepEqual(actual, expected) {
@@ -341,27 +329,25 @@ func TestEmptyMatrixCoverLeftColumn(t *testing.T) {
 	}
 
 	actual := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{2, 0, 1},
-		right:     []int{1, 2, 0},
-		up:        []int{0, 1, 2},
-		down:      []int{0, 1, 2},
-		colHeader: []int{0, 1},
-		colSize:   []int{0, 0},
-		rowNum:    []int{-1, -1, -1},
-		colNum:    []int{0, 1, -1},
+		problem: problem,
+		left:    []int{2, 0, 1},
+		right:   []int{1, 2, 0},
+		up:      []int{0, 1, 2},
+		down:    []int{0, 1, 2},
+		colSize: []int{0, 0},
+		rowNum:  []int{-1, -1, -1},
+		colNum:  []int{0, 1, -1},
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{2, 2, 1},
-		right:     []int{1, 2, 1},
-		up:        []int{0, 1, 2},
-		down:      []int{0, 1, 2},
-		colHeader: []int{0, 1},
-		colSize:   []int{0, 0},
-		rowNum:    []int{-1, -1, -1},
-		colNum:    []int{0, 1, -1},
+		problem: problem,
+		left:    []int{2, 2, 1},
+		right:   []int{1, 2, 1},
+		up:      []int{0, 1, 2},
+		down:    []int{0, 1, 2},
+		colSize: []int{0, 0},
+		rowNum:  []int{-1, -1, -1},
+		colNum:  []int{0, 1, -1},
 	}
 
 	if actual.coverColumn(0); !reflect.DeepEqual(actual, expected) {
@@ -369,7 +355,7 @@ func TestEmptyMatrixCoverLeftColumn(t *testing.T) {
 	}
 }
 
-func TestEmptyMatrixUnoverLeftColumn(t *testing.T) {
+func TestEmptyMatrixUncoverLeftColumn(t *testing.T) {
 	problem := exactCoverProblem{
 		rowNames: nameSlice{"row1", "row2"},
 		colNames: nameSlice{"col1", "col2"},
@@ -377,27 +363,25 @@ func TestEmptyMatrixUnoverLeftColumn(t *testing.T) {
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{2, 0, 1},
-		right:     []int{1, 2, 0},
-		up:        []int{0, 1, 2},
-		down:      []int{0, 1, 2},
-		colHeader: []int{0, 1},
-		colSize:   []int{0, 0},
-		rowNum:    []int{-1, -1, -1},
-		colNum:    []int{0, 1, -1},
+		problem: problem,
+		left:    []int{2, 0, 1},
+		right:   []int{1, 2, 0},
+		up:      []int{0, 1, 2},
+		down:    []int{0, 1, 2},
+		colSize: []int{0, 0},
+		rowNum:  []int{-1, -1, -1},
+		colNum:  []int{0, 1, -1},
 	}
 
 	actual := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{2, 2, 1},
-		right:     []int{1, 2, 1},
-		up:        []int{0, 1, 2},
-		down:      []int{0, 1, 2},
-		colHeader: []int{0, 1},
-		colSize:   []int{0, 0},
-		rowNum:    []int{-1, -1, -1},
-		colNum:    []int{0, 1, -1},
+		problem: problem,
+		left:    []int{2, 2, 1},
+		right:   []int{1, 2, 1},
+		up:      []int{0, 1, 2},
+		down:    []int{0, 1, 2},
+		colSize: []int{0, 0},
+		rowNum:  []int{-1, -1, -1},
+		colNum:  []int{0, 1, -1},
 	}
 
 	if actual.uncoverColumn(0); !reflect.DeepEqual(actual, expected) {
@@ -413,27 +397,25 @@ func TestEmptyMatrixCoverRightColumn(t *testing.T) {
 	}
 
 	actual := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{2, 0, 1},
-		right:     []int{1, 2, 0},
-		up:        []int{0, 1, 2},
-		down:      []int{0, 1, 2},
-		colHeader: []int{0, 1},
-		colSize:   []int{0, 0},
-		rowNum:    []int{-1, -1, -1},
-		colNum:    []int{0, 1, -1},
+		problem: problem,
+		left:    []int{2, 0, 1},
+		right:   []int{1, 2, 0},
+		up:      []int{0, 1, 2},
+		down:    []int{0, 1, 2},
+		colSize: []int{0, 0},
+		rowNum:  []int{-1, -1, -1},
+		colNum:  []int{0, 1, -1},
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{2, 0, 0},
-		right:     []int{2, 2, 0},
-		up:        []int{0, 1, 2},
-		down:      []int{0, 1, 2},
-		colHeader: []int{0, 1},
-		colSize:   []int{0, 0},
-		rowNum:    []int{-1, -1, -1},
-		colNum:    []int{0, 1, -1},
+		problem: problem,
+		left:    []int{2, 0, 0},
+		right:   []int{2, 2, 0},
+		up:      []int{0, 1, 2},
+		down:    []int{0, 1, 2},
+		colSize: []int{0, 0},
+		rowNum:  []int{-1, -1, -1},
+		colNum:  []int{0, 1, -1},
 	}
 
 	if actual.coverColumn(1); !reflect.DeepEqual(actual, expected) {
@@ -449,27 +431,25 @@ func TestEmptyMatrixUncoverRightColumn(t *testing.T) {
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{2, 0, 1},
-		right:     []int{1, 2, 0},
-		up:        []int{0, 1, 2},
-		down:      []int{0, 1, 2},
-		colHeader: []int{0, 1},
-		colSize:   []int{0, 0},
-		rowNum:    []int{-1, -1, -1},
-		colNum:    []int{0, 1, -1},
+		problem: problem,
+		left:    []int{2, 0, 1},
+		right:   []int{1, 2, 0},
+		up:      []int{0, 1, 2},
+		down:    []int{0, 1, 2},
+		colSize: []int{0, 0},
+		rowNum:  []int{-1, -1, -1},
+		colNum:  []int{0, 1, -1},
 	}
 
 	actual := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{2, 0, 0},
-		right:     []int{2, 2, 0},
-		up:        []int{0, 1, 2},
-		down:      []int{0, 1, 2},
-		colHeader: []int{0, 1},
-		colSize:   []int{0, 0},
-		rowNum:    []int{-1, -1, -1},
-		colNum:    []int{0, 1, -1},
+		problem: problem,
+		left:    []int{2, 0, 0},
+		right:   []int{2, 2, 0},
+		up:      []int{0, 1, 2},
+		down:    []int{0, 1, 2},
+		colSize: []int{0, 0},
+		rowNum:  []int{-1, -1, -1},
+		colNum:  []int{0, 1, -1},
 	}
 
 	if actual.uncoverColumn(1); !reflect.DeepEqual(actual, expected) {
@@ -485,27 +465,25 @@ func TestFullMatrixCoverLeftColumn(t *testing.T) {
 	}
 
 	actual := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{6, 0, 3, 2, 5, 4, 1},
-		right:     []int{1, 6, 3, 2, 5, 4, 0},
-		up:        []int{4, 5, 0, 1, 2, 3, 6},
-		down:      []int{2, 3, 4, 5, 0, 1, 6},
-		colHeader: []int{0, 1, 0, 1, 0, 1},
-		colSize:   []int{2, 2},
-		rowNum:    []int{-1, -1, 0, 0, 1, 1, -1},
-		colNum:    []int{0, 1, 0, 1, 0, 1, -1},
+		problem: problem,
+		left:    []int{6, 0, 3, 2, 5, 4, 1},
+		right:   []int{1, 6, 3, 2, 5, 4, 0},
+		up:      []int{4, 5, 0, 1, 2, 3, 6},
+		down:    []int{2, 3, 4, 5, 0, 1, 6},
+		colSize: []int{2, 2},
+		rowNum:  []int{-1, -1, 0, 0, 1, 1, -1},
+		colNum:  []int{0, 1, 0, 1, 0, 1, -1},
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{6, 6, 3, 2, 5, 4, 1},
-		right:     []int{1, 6, 3, 2, 5, 4, 1},
-		up:        []int{4, 1, 0, 1, 2, 1, 6},
-		down:      []int{2, 1, 4, 5, 0, 1, 6},
-		colHeader: []int{0, 1, 0, 1, 0, 1},
-		colSize:   []int{2, 0},
-		rowNum:    []int{-1, -1, 0, 0, 1, 1, -1},
-		colNum:    []int{0, 1, 0, 1, 0, 1, -1},
+		problem: problem,
+		left:    []int{6, 6, 3, 2, 5, 4, 1},
+		right:   []int{1, 6, 3, 2, 5, 4, 1},
+		up:      []int{4, 1, 0, 1, 2, 1, 6},
+		down:    []int{2, 1, 4, 5, 0, 1, 6},
+		colSize: []int{2, 0},
+		rowNum:  []int{-1, -1, 0, 0, 1, 1, -1},
+		colNum:  []int{0, 1, 0, 1, 0, 1, -1},
 	}
 
 	if actual.coverColumn(0); !reflect.DeepEqual(actual, expected) {
@@ -521,27 +499,25 @@ func TestFullMatrixUncoverLeftColumn(t *testing.T) {
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{6, 0, 3, 2, 5, 4, 1},
-		right:     []int{1, 6, 3, 2, 5, 4, 0},
-		up:        []int{4, 5, 0, 1, 2, 3, 6},
-		down:      []int{2, 3, 4, 5, 0, 1, 6},
-		colHeader: []int{0, 1, 0, 1, 0, 1},
-		colSize:   []int{2, 2},
-		rowNum:    []int{-1, -1, 0, 0, 1, 1, -1},
-		colNum:    []int{0, 1, 0, 1, 0, 1, -1},
+		problem: problem,
+		left:    []int{6, 0, 3, 2, 5, 4, 1},
+		right:   []int{1, 6, 3, 2, 5, 4, 0},
+		up:      []int{4, 5, 0, 1, 2, 3, 6},
+		down:    []int{2, 3, 4, 5, 0, 1, 6},
+		colSize: []int{2, 2},
+		rowNum:  []int{-1, -1, 0, 0, 1, 1, -1},
+		colNum:  []int{0, 1, 0, 1, 0, 1, -1},
 	}
 
 	actual := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{6, 6, 3, 2, 5, 4, 1},
-		right:     []int{1, 6, 3, 2, 5, 4, 1},
-		up:        []int{4, 1, 0, 1, 2, 1, 6},
-		down:      []int{2, 1, 4, 5, 0, 1, 6},
-		colHeader: []int{0, 1, 0, 1, 0, 1},
-		colSize:   []int{2, 0},
-		rowNum:    []int{-1, -1, 0, 0, 1, 1, -1},
-		colNum:    []int{0, 1, 0, 1, 0, 1, -1},
+		problem: problem,
+		left:    []int{6, 6, 3, 2, 5, 4, 1},
+		right:   []int{1, 6, 3, 2, 5, 4, 1},
+		up:      []int{4, 1, 0, 1, 2, 1, 6},
+		down:    []int{2, 1, 4, 5, 0, 1, 6},
+		colSize: []int{2, 0},
+		rowNum:  []int{-1, -1, 0, 0, 1, 1, -1},
+		colNum:  []int{0, 1, 0, 1, 0, 1, -1},
 	}
 
 	if actual.uncoverColumn(0); !reflect.DeepEqual(actual, expected) {
@@ -557,27 +533,25 @@ func TestFullMatrixCoverRightColumn(t *testing.T) {
 	}
 
 	actual := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{6, 0, 3, 2, 5, 4, 1},
-		right:     []int{1, 6, 3, 2, 5, 4, 0},
-		up:        []int{4, 5, 0, 1, 2, 3, 6},
-		down:      []int{2, 3, 4, 5, 0, 1, 6},
-		colHeader: []int{0, 1, 0, 1, 0, 1},
-		colSize:   []int{2, 2},
-		rowNum:    []int{-1, -1, 0, 0, 1, 1, -1},
-		colNum:    []int{0, 1, 0, 1, 0, 1, -1},
+		problem: problem,
+		left:    []int{6, 0, 3, 2, 5, 4, 1},
+		right:   []int{1, 6, 3, 2, 5, 4, 0},
+		up:      []int{4, 5, 0, 1, 2, 3, 6},
+		down:    []int{2, 3, 4, 5, 0, 1, 6},
+		colSize: []int{2, 2},
+		rowNum:  []int{-1, -1, 0, 0, 1, 1, -1},
+		colNum:  []int{0, 1, 0, 1, 0, 1, -1},
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{6, 0, 3, 2, 5, 4, 0},
-		right:     []int{6, 6, 3, 2, 5, 4, 0},
-		up:        []int{0, 5, 0, 1, 0, 3, 6},
-		down:      []int{0, 3, 4, 5, 0, 1, 6},
-		colHeader: []int{0, 1, 0, 1, 0, 1},
-		colSize:   []int{0, 2},
-		rowNum:    []int{-1, -1, 0, 0, 1, 1, -1},
-		colNum:    []int{0, 1, 0, 1, 0, 1, -1},
+		problem: problem,
+		left:    []int{6, 0, 3, 2, 5, 4, 0},
+		right:   []int{6, 6, 3, 2, 5, 4, 0},
+		up:      []int{0, 5, 0, 1, 0, 3, 6},
+		down:    []int{0, 3, 4, 5, 0, 1, 6},
+		colSize: []int{0, 2},
+		rowNum:  []int{-1, -1, 0, 0, 1, 1, -1},
+		colNum:  []int{0, 1, 0, 1, 0, 1, -1},
 	}
 
 	if actual.coverColumn(1); !reflect.DeepEqual(actual, expected) {
@@ -585,7 +559,7 @@ func TestFullMatrixCoverRightColumn(t *testing.T) {
 	}
 }
 
-func TestFullMatrixUnoverRightColumn(t *testing.T) {
+func TestFullMatrixUncoverRightColumn(t *testing.T) {
 	problem := exactCoverProblem{
 		rowNames: nameSlice{"row1", "row2"},
 		colNames: nameSlice{"col1", "col2"},
@@ -593,27 +567,25 @@ func TestFullMatrixUnoverRightColumn(t *testing.T) {
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{6, 0, 3, 2, 5, 4, 1},
-		right:     []int{1, 6, 3, 2, 5, 4, 0},
-		up:        []int{4, 5, 0, 1, 2, 3, 6},
-		down:      []int{2, 3, 4, 5, 0, 1, 6},
-		colHeader: []int{0, 1, 0, 1, 0, 1},
-		colSize:   []int{2, 2},
-		rowNum:    []int{-1, -1, 0, 0, 1, 1, -1},
-		colNum:    []int{0, 1, 0, 1, 0, 1, -1},
+		problem: problem,
+		left:    []int{6, 0, 3, 2, 5, 4, 1},
+		right:   []int{1, 6, 3, 2, 5, 4, 0},
+		up:      []int{4, 5, 0, 1, 2, 3, 6},
+		down:    []int{2, 3, 4, 5, 0, 1, 6},
+		colSize: []int{2, 2},
+		rowNum:  []int{-1, -1, 0, 0, 1, 1, -1},
+		colNum:  []int{0, 1, 0, 1, 0, 1, -1},
 	}
 
 	actual := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{6, 0, 3, 2, 5, 4, 0},
-		right:     []int{6, 6, 3, 2, 5, 4, 0},
-		up:        []int{0, 5, 0, 1, 0, 3, 6},
-		down:      []int{0, 3, 4, 5, 0, 1, 6},
-		colHeader: []int{0, 1, 0, 1, 0, 1},
-		colSize:   []int{0, 2},
-		rowNum:    []int{-1, -1, 0, 0, 1, 1, -1},
-		colNum:    []int{0, 1, 0, 1, 0, 1, -1},
+		problem: problem,
+		left:    []int{6, 0, 3, 2, 5, 4, 0},
+		right:   []int{6, 6, 3, 2, 5, 4, 0},
+		up:      []int{0, 5, 0, 1, 0, 3, 6},
+		down:    []int{0, 3, 4, 5, 0, 1, 6},
+		colSize: []int{0, 2},
+		rowNum:  []int{-1, -1, 0, 0, 1, 1, -1},
+		colNum:  []int{0, 1, 0, 1, 0, 1, -1},
 	}
 
 	if actual.uncoverColumn(1); !reflect.DeepEqual(actual, expected) {
@@ -629,27 +601,25 @@ func TestInverseIdentityMatrixCoverLeftColumn(t *testing.T) {
 	}
 
 	actual := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{9, 0, 1, 4, 3, 6, 5, 8, 7, 2},
-		right:     []int{1, 2, 9, 4, 3, 6, 5, 8, 7, 0},
-		up:        []int{7, 8, 6, 1, 2, 0, 4, 5, 3, 9},
-		down:      []int{5, 3, 4, 8, 6, 7, 2, 0, 1, 9},
-		colHeader: []int{0, 1, 2, 1, 2, 0, 2, 0, 1},
-		colSize:   []int{2, 2, 2},
-		rowNum:    []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
-		colNum:    []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
+		problem: problem,
+		left:    []int{9, 0, 1, 4, 3, 6, 5, 8, 7, 2},
+		right:   []int{1, 2, 9, 4, 3, 6, 5, 8, 7, 0},
+		up:      []int{7, 8, 6, 1, 2, 0, 4, 5, 3, 9},
+		down:    []int{5, 3, 4, 8, 6, 7, 2, 0, 1, 9},
+		colSize: []int{2, 2, 2},
+		rowNum:  []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
+		colNum:  []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{9, 9, 1, 4, 3, 6, 5, 8, 7, 2},
-		right:     []int{1, 2, 9, 4, 3, 6, 5, 8, 7, 1},
-		up:        []int{7, 3, 4, 1, 2, 0, 4, 5, 3, 9},
-		down:      []int{5, 3, 4, 1, 2, 7, 2, 0, 1, 9},
-		colHeader: []int{0, 1, 2, 1, 2, 0, 2, 0, 1},
-		colSize:   []int{2, 1, 1},
-		rowNum:    []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
-		colNum:    []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
+		problem: problem,
+		left:    []int{9, 9, 1, 4, 3, 6, 5, 8, 7, 2},
+		right:   []int{1, 2, 9, 4, 3, 6, 5, 8, 7, 1},
+		up:      []int{7, 3, 4, 1, 2, 0, 4, 5, 3, 9},
+		down:    []int{5, 3, 4, 1, 2, 7, 2, 0, 1, 9},
+		colSize: []int{2, 1, 1},
+		rowNum:  []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
+		colNum:  []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
 	}
 
 	if actual.coverColumn(0); !reflect.DeepEqual(actual, expected) {
@@ -665,27 +635,25 @@ func TestInverseIdentityMatrixUncoverLeftColumn(t *testing.T) {
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{9, 0, 1, 4, 3, 6, 5, 8, 7, 2},
-		right:     []int{1, 2, 9, 4, 3, 6, 5, 8, 7, 0},
-		up:        []int{7, 8, 6, 1, 2, 0, 4, 5, 3, 9},
-		down:      []int{5, 3, 4, 8, 6, 7, 2, 0, 1, 9},
-		colHeader: []int{0, 1, 2, 1, 2, 0, 2, 0, 1},
-		colSize:   []int{2, 2, 2},
-		rowNum:    []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
-		colNum:    []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
+		problem: problem,
+		left:    []int{9, 0, 1, 4, 3, 6, 5, 8, 7, 2},
+		right:   []int{1, 2, 9, 4, 3, 6, 5, 8, 7, 0},
+		up:      []int{7, 8, 6, 1, 2, 0, 4, 5, 3, 9},
+		down:    []int{5, 3, 4, 8, 6, 7, 2, 0, 1, 9},
+		colSize: []int{2, 2, 2},
+		rowNum:  []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
+		colNum:  []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
 	}
 
 	actual := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{9, 9, 1, 4, 3, 6, 5, 8, 7, 2},
-		right:     []int{1, 2, 9, 4, 3, 6, 5, 8, 7, 1},
-		up:        []int{7, 3, 4, 1, 2, 0, 4, 5, 3, 9},
-		down:      []int{5, 3, 4, 1, 2, 7, 2, 0, 1, 9},
-		colHeader: []int{0, 1, 2, 1, 2, 0, 2, 0, 1},
-		colSize:   []int{2, 1, 1},
-		rowNum:    []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
-		colNum:    []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
+		problem: problem,
+		left:    []int{9, 9, 1, 4, 3, 6, 5, 8, 7, 2},
+		right:   []int{1, 2, 9, 4, 3, 6, 5, 8, 7, 1},
+		up:      []int{7, 3, 4, 1, 2, 0, 4, 5, 3, 9},
+		down:    []int{5, 3, 4, 1, 2, 7, 2, 0, 1, 9},
+		colSize: []int{2, 1, 1},
+		rowNum:  []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
+		colNum:  []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
 	}
 
 	if actual.uncoverColumn(0); !reflect.DeepEqual(actual, expected) {
@@ -701,27 +669,25 @@ func TestInverseIdentityMatrixCoverMiddleColumn(t *testing.T) {
 	}
 
 	actual := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{9, 0, 1, 4, 3, 6, 5, 8, 7, 2},
-		right:     []int{1, 2, 9, 4, 3, 6, 5, 8, 7, 0},
-		up:        []int{7, 8, 6, 1, 2, 0, 4, 5, 3, 9},
-		down:      []int{5, 3, 4, 8, 6, 7, 2, 0, 1, 9},
-		colHeader: []int{0, 1, 2, 1, 2, 0, 2, 0, 1},
-		colSize:   []int{2, 2, 2},
-		rowNum:    []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
-		colNum:    []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
+		problem: problem,
+		left:    []int{9, 0, 1, 4, 3, 6, 5, 8, 7, 2},
+		right:   []int{1, 2, 9, 4, 3, 6, 5, 8, 7, 0},
+		up:      []int{7, 8, 6, 1, 2, 0, 4, 5, 3, 9},
+		down:    []int{5, 3, 4, 8, 6, 7, 2, 0, 1, 9},
+		colSize: []int{2, 2, 2},
+		rowNum:  []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
+		colNum:  []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{9, 0, 0, 4, 3, 6, 5, 8, 7, 2},
-		right:     []int{2, 2, 9, 4, 3, 6, 5, 8, 7, 0},
-		up:        []int{5, 8, 6, 1, 2, 0, 2, 5, 3, 9},
-		down:      []int{5, 3, 6, 8, 6, 0, 2, 0, 1, 9},
-		colHeader: []int{0, 1, 2, 1, 2, 0, 2, 0, 1},
-		colSize:   []int{1, 2, 1},
-		rowNum:    []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
-		colNum:    []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
+		problem: problem,
+		left:    []int{9, 0, 0, 4, 3, 6, 5, 8, 7, 2},
+		right:   []int{2, 2, 9, 4, 3, 6, 5, 8, 7, 0},
+		up:      []int{5, 8, 6, 1, 2, 0, 2, 5, 3, 9},
+		down:    []int{5, 3, 6, 8, 6, 0, 2, 0, 1, 9},
+		colSize: []int{1, 2, 1},
+		rowNum:  []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
+		colNum:  []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
 	}
 
 	if actual.coverColumn(1); !reflect.DeepEqual(actual, expected) {
@@ -737,27 +703,25 @@ func TestInverseIdentityMatrixUncoverMiddleColumn(t *testing.T) {
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{9, 0, 1, 4, 3, 6, 5, 8, 7, 2},
-		right:     []int{1, 2, 9, 4, 3, 6, 5, 8, 7, 0},
-		up:        []int{7, 8, 6, 1, 2, 0, 4, 5, 3, 9},
-		down:      []int{5, 3, 4, 8, 6, 7, 2, 0, 1, 9},
-		colHeader: []int{0, 1, 2, 1, 2, 0, 2, 0, 1},
-		colSize:   []int{2, 2, 2},
-		rowNum:    []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
-		colNum:    []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
+		problem: problem,
+		left:    []int{9, 0, 1, 4, 3, 6, 5, 8, 7, 2},
+		right:   []int{1, 2, 9, 4, 3, 6, 5, 8, 7, 0},
+		up:      []int{7, 8, 6, 1, 2, 0, 4, 5, 3, 9},
+		down:    []int{5, 3, 4, 8, 6, 7, 2, 0, 1, 9},
+		colSize: []int{2, 2, 2},
+		rowNum:  []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
+		colNum:  []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
 	}
 
 	actual := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{9, 0, 0, 4, 3, 6, 5, 8, 7, 2},
-		right:     []int{2, 2, 9, 4, 3, 6, 5, 8, 7, 0},
-		up:        []int{5, 8, 6, 1, 2, 0, 2, 5, 3, 9},
-		down:      []int{5, 3, 6, 8, 6, 0, 2, 0, 1, 9},
-		colHeader: []int{0, 1, 2, 1, 2, 0, 2, 0, 1},
-		colSize:   []int{1, 2, 1},
-		rowNum:    []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
-		colNum:    []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
+		problem: problem,
+		left:    []int{9, 0, 0, 4, 3, 6, 5, 8, 7, 2},
+		right:   []int{2, 2, 9, 4, 3, 6, 5, 8, 7, 0},
+		up:      []int{5, 8, 6, 1, 2, 0, 2, 5, 3, 9},
+		down:    []int{5, 3, 6, 8, 6, 0, 2, 0, 1, 9},
+		colSize: []int{1, 2, 1},
+		rowNum:  []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
+		colNum:  []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
 	}
 
 	if actual.uncoverColumn(1); !reflect.DeepEqual(actual, expected) {
@@ -773,27 +737,25 @@ func TestInverseIdentityMatrixCoverRightColumn(t *testing.T) {
 	}
 
 	actual := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{9, 0, 1, 4, 3, 6, 5, 8, 7, 2},
-		right:     []int{1, 2, 9, 4, 3, 6, 5, 8, 7, 0},
-		up:        []int{7, 8, 6, 1, 2, 0, 4, 5, 3, 9},
-		down:      []int{5, 3, 4, 8, 6, 7, 2, 0, 1, 9},
-		colHeader: []int{0, 1, 2, 1, 2, 0, 2, 0, 1},
-		colSize:   []int{2, 2, 2},
-		rowNum:    []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
-		colNum:    []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
+		problem: problem,
+		left:    []int{9, 0, 1, 4, 3, 6, 5, 8, 7, 2},
+		right:   []int{1, 2, 9, 4, 3, 6, 5, 8, 7, 0},
+		up:      []int{7, 8, 6, 1, 2, 0, 4, 5, 3, 9},
+		down:    []int{5, 3, 4, 8, 6, 7, 2, 0, 1, 9},
+		colSize: []int{2, 2, 2},
+		rowNum:  []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
+		colNum:  []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{9, 0, 1, 4, 3, 6, 5, 8, 7, 1},
-		right:     []int{1, 9, 9, 4, 3, 6, 5, 8, 7, 0},
-		up:        []int{7, 8, 6, 1, 2, 0, 4, 0, 1, 9},
-		down:      []int{7, 8, 4, 8, 6, 7, 2, 0, 1, 9},
-		colHeader: []int{0, 1, 2, 1, 2, 0, 2, 0, 1},
-		colSize:   []int{1, 1, 2},
-		rowNum:    []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
-		colNum:    []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
+		problem: problem,
+		left:    []int{9, 0, 1, 4, 3, 6, 5, 8, 7, 1},
+		right:   []int{1, 9, 9, 4, 3, 6, 5, 8, 7, 0},
+		up:      []int{7, 8, 6, 1, 2, 0, 4, 0, 1, 9},
+		down:    []int{7, 8, 4, 8, 6, 7, 2, 0, 1, 9},
+		colSize: []int{1, 1, 2},
+		rowNum:  []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
+		colNum:  []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
 	}
 
 	if actual.coverColumn(2); !reflect.DeepEqual(actual, expected) {
@@ -809,27 +771,25 @@ func TestInverseIdentityMatrixUncoverRightColumn(t *testing.T) {
 	}
 
 	expected := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{9, 0, 1, 4, 3, 6, 5, 8, 7, 2},
-		right:     []int{1, 2, 9, 4, 3, 6, 5, 8, 7, 0},
-		up:        []int{7, 8, 6, 1, 2, 0, 4, 5, 3, 9},
-		down:      []int{5, 3, 4, 8, 6, 7, 2, 0, 1, 9},
-		colHeader: []int{0, 1, 2, 1, 2, 0, 2, 0, 1},
-		colSize:   []int{2, 2, 2},
-		rowNum:    []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
-		colNum:    []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
+		problem: problem,
+		left:    []int{9, 0, 1, 4, 3, 6, 5, 8, 7, 2},
+		right:   []int{1, 2, 9, 4, 3, 6, 5, 8, 7, 0},
+		up:      []int{7, 8, 6, 1, 2, 0, 4, 5, 3, 9},
+		down:    []int{5, 3, 4, 8, 6, 7, 2, 0, 1, 9},
+		colSize: []int{2, 2, 2},
+		rowNum:  []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
+		colNum:  []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
 	}
 
 	actual := exactCoverMatrix{
-		problem:   problem,
-		left:      []int{9, 0, 1, 4, 3, 6, 5, 8, 7, 1},
-		right:     []int{1, 9, 9, 4, 3, 6, 5, 8, 7, 0},
-		up:        []int{7, 8, 6, 1, 2, 0, 4, 0, 1, 9},
-		down:      []int{7, 8, 4, 8, 6, 7, 2, 0, 1, 9},
-		colHeader: []int{0, 1, 2, 1, 2, 0, 2, 0, 1},
-		colSize:   []int{1, 1, 2},
-		rowNum:    []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
-		colNum:    []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
+		problem: problem,
+		left:    []int{9, 0, 1, 4, 3, 6, 5, 8, 7, 1},
+		right:   []int{1, 9, 9, 4, 3, 6, 5, 8, 7, 0},
+		up:      []int{7, 8, 6, 1, 2, 0, 4, 0, 1, 9},
+		down:    []int{7, 8, 4, 8, 6, 7, 2, 0, 1, 9},
+		colSize: []int{1, 1, 2},
+		rowNum:  []int{-1, -1, -1, 0, 0, 1, 1, 2, 2, -1},
+		colNum:  []int{0, 1, 2, 1, 2, 0, 2, 0, 1, -1},
 	}
 
 	if actual.uncoverColumn(2); !reflect.DeepEqual(actual, expected) {

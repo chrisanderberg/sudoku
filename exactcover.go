@@ -163,15 +163,14 @@ func (eccs exactCoverCompleteSolution) String() string {
 
 // exactCoverMatrix represents the matrix form of an exact cover problem
 type exactCoverMatrix struct {
-	problem   exactCoverProblem
-	left      []int
-	right     []int
-	up        []int
-	down      []int
-	colHeader []int
-	colSize   []int
-	rowNum    []int
-	colNum    []int
+	problem exactCoverProblem
+	left    []int
+	right   []int
+	up      []int
+	down    []int
+	colSize []int
+	rowNum  []int
+	colNum  []int
 }
 
 func (ecm exactCoverMatrix) coverColumn(col int) {
@@ -179,7 +178,7 @@ func (ecm exactCoverMatrix) coverColumn(col int) {
 	right := ecm.right
 	up := ecm.up
 	down := ecm.down
-	colHeader := ecm.colHeader
+	colNum := ecm.colNum
 	colSize := ecm.colSize
 
 	right[left[col]] = right[col]
@@ -188,7 +187,7 @@ func (ecm exactCoverMatrix) coverColumn(col int) {
 		for j := right[i]; j != i; j = right[j] {
 			down[up[j]] = down[j]
 			up[down[j]] = up[j]
-			colSize[colHeader[j]]--
+			colSize[colNum[j]]--
 		}
 	}
 }
@@ -198,14 +197,14 @@ func (ecm exactCoverMatrix) uncoverColumn(col int) {
 	right := ecm.right
 	up := ecm.up
 	down := ecm.down
-	colHeader := ecm.colHeader
+	colNum := ecm.colNum
 	colSize := ecm.colSize
 
 	for i := up[col]; i != col; i = up[i] {
 		for j := left[i]; j != i; j = left[j] {
 			down[up[j]] = j
 			up[down[j]] = j
-			colSize[colHeader[j]]++
+			colSize[colNum[j]]++
 		}
 	}
 	right[left[col]] = col
@@ -230,7 +229,6 @@ func buildMatrix(problem exactCoverProblem) exactCoverMatrix {
 	right := make([]int, numElems+numCols+1)
 	up := make([]int, numElems+numCols+1)
 	down := make([]int, numElems+numCols+1)
-	colHeader := make([]int, numElems+numCols)
 	rowNum := make([]int, numElems+numCols+1)
 	colNum := make([]int, numElems+numCols+1)
 	colSize := make([]int, numCols)
@@ -241,7 +239,6 @@ func buildMatrix(problem exactCoverProblem) exactCoverMatrix {
 		right[i] = i + 1
 		up[i] = i
 		down[i] = i
-		colHeader[i] = i
 		rowNum[i] = -1
 		colNum[i] = i
 		colSize[i] = 0
@@ -268,7 +265,6 @@ func buildMatrix(problem exactCoverProblem) exactCoverMatrix {
 				colNum[elem] = colIndex
 
 				// insert the element into the column
-				colHeader[elem] = colIndex
 				colSize[colIndex]++
 				down[elem] = colIndex
 				up[elem] = up[colIndex]
@@ -294,15 +290,14 @@ func buildMatrix(problem exactCoverProblem) exactCoverMatrix {
 	}
 
 	return exactCoverMatrix{
-		problem:   problem,
-		left:      left,
-		right:     right,
-		up:        up,
-		down:      down,
-		colHeader: colHeader,
-		colSize:   colSize,
-		rowNum:    rowNum,
-		colNum:    colNum,
+		problem: problem,
+		left:    left,
+		right:   right,
+		up:      up,
+		down:    down,
+		colSize: colSize,
+		rowNum:  rowNum,
+		colNum:  colNum,
 	}
 }
 
