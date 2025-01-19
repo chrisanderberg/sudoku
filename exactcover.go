@@ -174,6 +174,44 @@ type exactCoverMatrix struct {
 	colNum    []int
 }
 
+func (ecm exactCoverMatrix) coverColumn(col int) {
+	left := ecm.left
+	right := ecm.right
+	up := ecm.up
+	down := ecm.down
+	colHeader := ecm.colHeader
+	colSize := ecm.colSize
+
+	right[left[col]] = right[col]
+	left[right[col]] = left[col]
+	for i := down[col]; i != col; i = down[i] {
+		for j := right[i]; j != i; j = right[j] {
+			down[up[j]] = down[j]
+			up[down[j]] = up[j]
+			colSize[colHeader[j]]--
+		}
+	}
+}
+
+func (ecm exactCoverMatrix) uncoverColumn(col int) {
+	left := ecm.left
+	right := ecm.right
+	up := ecm.up
+	down := ecm.down
+	colHeader := ecm.colHeader
+	colSize := ecm.colSize
+
+	for i := up[col]; i != col; i = up[i] {
+		for j := left[i]; j != i; j = left[j] {
+			down[up[j]] = j
+			up[down[j]] = j
+			colSize[colHeader[j]]++
+		}
+	}
+	right[left[col]] = col
+	left[right[col]] = col
+}
+
 // buildMatrix constructs an exactCoverMatrix from an exactCoverPartialSolution
 func buildMatrix(problem exactCoverProblem) exactCoverMatrix {
 	numRows := len(problem.rowNames)
@@ -192,7 +230,7 @@ func buildMatrix(problem exactCoverProblem) exactCoverMatrix {
 	right := make([]int, numElems+numCols+1)
 	up := make([]int, numElems+numCols+1)
 	down := make([]int, numElems+numCols+1)
-	colHeader := make([]int, numElems+numCols+1)
+	colHeader := make([]int, numElems+numCols)
 	rowNum := make([]int, numElems+numCols+1)
 	colNum := make([]int, numElems+numCols+1)
 	colSize := make([]int, numCols)
@@ -217,41 +255,40 @@ func buildMatrix(problem exactCoverProblem) exactCoverMatrix {
 	right[numCols-1] = header
 	up[header] = header
 	down[header] = header
-	colHeader[header] = header
 	colNum[header] = -1
 	rowNum[header] = -1
 
-	// Populate the matrix with nodes
-	node := numCols
+	// Populate the matrix with elements
+	elem := numCols
 	for rowIndex := 0; rowIndex < numRows; rowIndex++ {
-		firstNodeInRow := true
+		firstElemInRow := true
 		for colIndex := 0; colIndex < numCols; colIndex++ {
 			if problem.elems[rowIndex*numCols+colIndex] {
-				rowNum[node] = rowIndex
-				colNum[node] = colIndex
+				rowNum[elem] = rowIndex
+				colNum[elem] = colIndex
 
-				// insert the node into the column
-				colHeader[node] = colIndex
+				// insert the element into the column
+				colHeader[elem] = colIndex
 				colSize[colIndex]++
-				down[node] = colIndex
-				up[node] = up[colIndex]
-				down[up[colIndex]] = node
-				up[colIndex] = node
+				down[elem] = colIndex
+				up[elem] = up[colIndex]
+				down[up[colIndex]] = elem
+				up[colIndex] = elem
 
-				if firstNodeInRow {
-					// first node in the row
-					firstNodeInRow = false
-					left[node] = node
-					right[node] = node
+				if firstElemInRow {
+					// first element in the row is its own left and right
+					firstElemInRow = false
+					left[elem] = elem
+					right[elem] = elem
 				} else {
-					// insert the node into the row
-					left[node] = node - 1
-					right[node] = right[node-1]
-					left[right[node]] = node
-					right[node-1] = node
+					// insert the element into the row
+					left[elem] = elem - 1
+					right[elem] = right[elem-1]
+					left[right[elem]] = elem
+					right[elem-1] = elem
 				}
 
-				node++
+				elem++
 			}
 		}
 	}
