@@ -411,8 +411,11 @@ func solve(problem exactCoverProblem) (exactCoverSolution, error) {
 		return exactCoverSolution{}, fmt.Errorf("no solution exists")
 	}
 
-	// Convert row numbers to selectedRows boolean slice
-	selectedRows := make([]bool, len(problem.constraints.rowNames))
+	// Create a copy of the input problem's selectedRows
+	selectedRows := make([]bool, len(problem.selectedRows))
+	copy(selectedRows, problem.selectedRows)
+
+	// Add any additional rows from the solution
 	for _, rowNum := range rowNums {
 		selectedRows[rowNum] = true
 	}
