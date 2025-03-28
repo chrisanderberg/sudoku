@@ -373,9 +373,10 @@ func main() {
 			fmt.Fprintf(os.Stderr, "Error writing formatted puzzle: %v\n", err)
 			os.Exit(1)
 		}
-		fmt.Printf("Formatted puzzle written to %s\n\n", filepath)
-		// Also display the formatted puzzle
+
+		// Display the formatted puzzle
 		fmt.Println(problem)
+		fmt.Printf("\nFormatted puzzle written to %s\n", filepath)
 	case "solve":
 		fmt.Println("Problem:")
 		fmt.Println(problem)

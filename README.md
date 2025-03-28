@@ -38,7 +38,6 @@ $ sudoku solve puzzle.txt
 $ sudoku solve puzzle.txt solution.txt
 ```
 
-## Example
 ```bash
 $ cat puzzle.txt
 53..7....
