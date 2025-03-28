@@ -319,14 +319,38 @@ func fromString(s string) (sudokuProblem, error) {
 }
 
 func main() {
-	// Check if a file path was provided
-	if len(os.Args) != 2 {
-		fmt.Fprintf(os.Stderr, "Usage: %s <puzzle-file>\n", os.Args[0])
+	// Check if we have enough arguments
+	if len(os.Args) < 3 || len(os.Args) > 4 {
+		fmt.Fprintf(os.Stderr, "Usage: %s <command> <puzzle-file> [output-file]\n", os.Args[0])
+		fmt.Fprintf(os.Stderr, "Commands:\n")
+		fmt.Fprintf(os.Stderr, "  display  Display the formatted puzzle\n")
+		fmt.Fprintf(os.Stderr, "  format   Format the puzzle file in-place\n")
+		fmt.Fprintf(os.Stderr, "  solve    Solve the puzzle and display the solution\n")
+		fmt.Fprintf(os.Stderr, "          (optionally write solution to output-file)\n")
 		os.Exit(1)
 	}
 
+	command := os.Args[1]
+	filepath := os.Args[2]
+
+	// Validate command and argument count
+	switch command {
+	case "solve":
+		// solve can have 1 or 2 file arguments
+		if len(os.Args) > 4 {
+			fmt.Fprintf(os.Stderr, "solve command takes at most 2 file arguments\n")
+			os.Exit(1)
+		}
+	default:
+		// other commands must have exactly 1 file argument
+		if len(os.Args) != 3 {
+			fmt.Fprintf(os.Stderr, "%s command takes exactly 1 file argument\n", command)
+			os.Exit(1)
+		}
+	}
+
 	// Read the file contents
-	input, err := os.ReadFile(os.Args[1])
+	input, err := os.ReadFile(filepath)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error reading file: %v\n", err)
 		os.Exit(1)
@@ -339,16 +363,45 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println("Problem:")
-	fmt.Println(problem)
+	switch command {
+	case "display":
+		fmt.Println(problem)
+	case "format":
+		// Write the formatted puzzle back to the file
+		formatted := problem.String()
+		if err := os.WriteFile(filepath, []byte(formatted), 0644); err != nil {
+			fmt.Fprintf(os.Stderr, "Error writing formatted puzzle: %v\n", err)
+			os.Exit(1)
+		}
+		fmt.Printf("Formatted puzzle written to %s\n\n", filepath)
+		// Also display the formatted puzzle
+		fmt.Println(problem)
+	case "solve":
+		fmt.Println("Problem:")
+		fmt.Println(problem)
 
-	// Solve the puzzle
-	solution, err := problem.solve()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error solving problem: %v\n", err)
+		// Solve the puzzle
+		solution, err := problem.solve()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error solving problem: %v\n", err)
+			os.Exit(1)
+		}
+
+		fmt.Println("\nSolution:")
+		fmt.Println(solution)
+
+		// If output file is specified, write the solution to it
+		if len(os.Args) == 4 {
+			outputPath := os.Args[3]
+			if err := os.WriteFile(outputPath, []byte(solution.String()), 0644); err != nil {
+				fmt.Fprintf(os.Stderr, "Error writing solution: %v\n", err)
+				os.Exit(1)
+			}
+			fmt.Printf("\nSolution written to %s\n", outputPath)
+		}
+	default:
+		fmt.Fprintf(os.Stderr, "Unknown command: %s\n", command)
+		fmt.Fprintf(os.Stderr, "Valid commands are 'display', 'format', and 'solve'\n")
 		os.Exit(1)
 	}
-
-	fmt.Println("Solution:")
-	fmt.Println(solution)
 }
