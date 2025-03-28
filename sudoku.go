@@ -323,8 +323,7 @@ func main() {
 	if len(os.Args) < 3 || len(os.Args) > 4 {
 		fmt.Fprintf(os.Stderr, "Usage: %s <command> <puzzle-file> [output-file]\n", os.Args[0])
 		fmt.Fprintf(os.Stderr, "Commands:\n")
-		fmt.Fprintf(os.Stderr, "  display  Display the formatted puzzle\n")
-		fmt.Fprintf(os.Stderr, "  format   Format the puzzle file in-place\n")
+		fmt.Fprintf(os.Stderr, "  format   Format the puzzle and optionally write to output-file\n")
 		fmt.Fprintf(os.Stderr, "  solve    Solve the puzzle and display the solution\n")
 		fmt.Fprintf(os.Stderr, "          (optionally write solution to output-file)\n")
 		os.Exit(1)
@@ -335,18 +334,16 @@ func main() {
 
 	// Validate command and argument count
 	switch command {
-	case "solve":
-		// solve can have 1 or 2 file arguments
+	case "format", "solve":
+		// format and solve can have 1 or 2 file arguments
 		if len(os.Args) > 4 {
-			fmt.Fprintf(os.Stderr, "solve command takes at most 2 file arguments\n")
+			fmt.Fprintf(os.Stderr, "%s command takes at most 2 file arguments\n", command)
 			os.Exit(1)
 		}
 	default:
-		// other commands must have exactly 1 file argument
-		if len(os.Args) != 3 {
-			fmt.Fprintf(os.Stderr, "%s command takes exactly 1 file argument\n", command)
-			os.Exit(1)
-		}
+		fmt.Fprintf(os.Stderr, "Unknown command: %s\n", command)
+		fmt.Fprintf(os.Stderr, "Valid commands are 'format' and 'solve'\n")
+		os.Exit(1)
 	}
 
 	// Read the file contents
@@ -364,19 +361,19 @@ func main() {
 	}
 
 	switch command {
-	case "display":
-		fmt.Println(problem)
 	case "format":
-		// Write the formatted puzzle back to the file
-		formatted := problem.String()
-		if err := os.WriteFile(filepath, []byte(formatted), 0644); err != nil {
-			fmt.Fprintf(os.Stderr, "Error writing formatted puzzle: %v\n", err)
-			os.Exit(1)
-		}
-
 		// Display the formatted puzzle
 		fmt.Println(problem)
-		fmt.Printf("\nFormatted puzzle written to %s\n", filepath)
+
+		// If output file is specified, write the formatted puzzle to it
+		if len(os.Args) == 4 {
+			outputPath := os.Args[3]
+			if err := os.WriteFile(outputPath, []byte(problem.String()), 0644); err != nil {
+				fmt.Fprintf(os.Stderr, "Error writing formatted puzzle: %v\n", err)
+				os.Exit(1)
+			}
+			fmt.Printf("\nFormatted puzzle written to %s\n", outputPath)
+		}
 	case "solve":
 		fmt.Println("Problem:")
 		fmt.Println(problem)
@@ -400,9 +397,5 @@ func main() {
 			}
 			fmt.Printf("\nSolution written to %s\n", outputPath)
 		}
-	default:
-		fmt.Fprintf(os.Stderr, "Unknown command: %s\n", command)
-		fmt.Fprintf(os.Stderr, "Valid commands are 'display', 'format', and 'solve'\n")
-		os.Exit(1)
 	}
 }

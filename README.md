@@ -18,30 +18,13 @@ sudoku <command> <puzzle-file> [output-file]
 ```
 
 ### Commands
-- `display`: Show the formatted puzzle
-- `format`: Format the puzzle file in-place and display it
+- `format`: Format the puzzle and optionally write to output-file
 - `solve`: Solve the puzzle and display both problem and solution
   - Optionally write solution to output-file if specified
 
 ### Examples
 ```bash
-# Display a formatted puzzle
-$ sudoku display puzzle.txt
-┌───────┬───────┬───────┐
-│ 5 3 · │ · 7 · │ · · · │
-│ 6 · · │ 1 9 5 │ · · · │
-│ · 9 8 │ · · · │ · 6 · │
-├───────┼───────┼───────┤
-│ 8 · · │ · 6 · │ · · 3 │
-│ 4 · · │ 8 · 3 │ · · 1 │
-│ 7 · · │ · 2 · │ · · 6 │
-├───────┼───────┼───────┤
-│ · 6 · │ · · · │ 2 8 · │
-│ · · · │ 4 1 9 │ · · 5 │
-│ · · · │ · 8 · │ · 7 9 │
-└───────┴───────┴───────┘
-
-# Format a puzzle file in-place
+# Format a puzzle and display it
 $ sudoku format puzzle.txt
 ┌───────┬───────┬───────┐
 │ 5 3 · │ · 7 · │ · · · │
@@ -57,7 +40,23 @@ $ sudoku format puzzle.txt
 │ · · · │ · 8 · │ · 7 9 │
 └───────┴───────┴───────┘
 
-Formatted puzzle written to puzzle.txt
+# Format a puzzle and save to a file
+$ sudoku format puzzle.txt formatted.txt
+┌───────┬───────┬───────┐
+│ 5 3 · │ · 7 · │ · · · │
+│ 6 · · │ 1 9 5 │ · · · │
+│ · 9 8 │ · · · │ · 6 · │
+├───────┼───────┼───────┤
+│ 8 · · │ · 6 · │ · · 3 │
+│ 4 · · │ 8 · 3 │ · · 1 │
+│ 7 · · │ · 2 · │ · · 6 │
+├───────┼───────┼───────┤
+│ · 6 · │ · · · │ 2 8 · │
+│ · · · │ 4 1 9 │ · · 5 │
+│ · · · │ · 8 · │ · 7 9 │
+└───────┴───────┴───────┘
+
+Formatted puzzle written to formatted.txt
 
 # Solve a puzzle and display the result
 $ sudoku solve puzzle.txt
