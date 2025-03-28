@@ -51,7 +51,7 @@ $ cat puzzle.txt
 ...419..5
 ....8..79
 
-$ sudoku puzzle.txt
+$ sudoku solve puzzle.txt
 Problem:
 ┌───────┬───────┬───────┐
 │ 5 3 · │ · 7 · │ · · · │
